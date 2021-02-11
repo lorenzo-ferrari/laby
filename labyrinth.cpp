@@ -18,7 +18,7 @@
 #define GENERATE
 void generate(int x, int y, Labyrinth_type &labyrinth) {
     std::vector<int> randomDirections {UP, LEFT, DOWN, RIGHT};
-    random_shuffle(directions.begin(), directions.end());
+    random_shuffle(randomDirections.begin(), randomDirections.end());
 
     for (int direction: randomDirections) {
         switch (direction) {
