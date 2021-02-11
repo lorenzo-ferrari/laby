@@ -1,3 +1,5 @@
 # Labyrinth Generator
 
-nice labyrinth generator sos
+**ancora in fase di progettazione**
+
+sos
