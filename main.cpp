@@ -5,29 +5,24 @@
 
 #include "labyrinth.h"
 #include "constants.h"
-#include "aliases.h"
 
 #define INPUT_FILE "input.txt"
 #define OUTPUT_FILE "output.txt"
 
 int main() {
+    // freopen(INPUT_FILE, "r", stdin);
+    // freopen(OUTPUT_FILE, "w", stdout);
+
     if(checkForErrors()) {
         return 0;
     }
     
     std::srand(std::time(NULL));
 
-    std::vector<std::vector<char>> labyrinth(ROWS, std::vector<char> (COLUMNS, WALL));
+    Labyrinth_type labyrinth(ROWS, COLUMNS);
+    initLabyrinth(labyrinth);
 
-    for (int i = 1; i < ROWS; i += 2) {
-        for (int j = 1; j < COLUMNS; j += 2) {
-            labyrinth[i][j] = EMPTY;
-        }
-    }
-
-    std::vector<std::vector<bool>> vis(ROWS, std::vector<bool> (COLUMNS, false));
-
-    generate(1, 1, labyrinth, vis);
+    generate(1, 1, labyrinth);
 
     printLabyrinth(labyrinth);
 
