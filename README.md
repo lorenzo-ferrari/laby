@@ -9,7 +9,7 @@ This is a labyrinth generator.
 
 ### I/O
 
-* By default, the program writes to stdout.
+* By default, the program prints the labyrinth to stdout.
 * this setting can be easily modified in the [main](/src/main.cpp) defining ```OUTPUT_FILE``` and uncommenting "```freopen(OUTPUT_FILE, "w", stdout);```" (line 14).
 
 ### Example:

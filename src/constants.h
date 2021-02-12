@@ -6,7 +6,7 @@ inline const int ROWS = 23; // c++17
 
 #ifndef COLUMNS_DEFINED
 #define COLUMNS_DEFINED
-inline const int COLUMNS = 53; // c++17
+inline const int COLUMNS = 71; // c++17
 #endif
 
 #ifndef EMPTY_DEFINED
