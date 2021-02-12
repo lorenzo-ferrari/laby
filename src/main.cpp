@@ -10,8 +10,8 @@
 #define OUTPUT_FILE "output.txt"
 
 int main() {
-    freopen(INPUT_FILE, "r", stdin);
-    freopen(OUTPUT_FILE, "w", stdout);
+    // freopen(INPUT_FILE, "r", stdin);
+    // freopen(OUTPUT_FILE, "w", stdout);
 
     if(checkForErrors()) {
         return 0;
