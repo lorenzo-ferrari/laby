@@ -1,12 +1,12 @@
 // ROWS and COLUMNS must be odd
 #ifndef ROWS_DEFINED
 #define ROWS_DEFINED
-inline const int ROWS = 23; // c++17
+inline const int ROWS = 69; // c++17
 #endif
 
 #ifndef COLUMNS_DEFINED
 #define COLUMNS_DEFINED
-inline const int COLUMNS = 71; // c++17
+inline const int COLUMNS = 69; // c++17
 #endif
 
 #ifndef EMPTY_DEFINED
