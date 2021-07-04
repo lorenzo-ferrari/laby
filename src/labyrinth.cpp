@@ -13,10 +13,14 @@
 #define DOWN 2
 #define RIGHT 3
 
+Laby_t::Laby_t (int rows, int columns) {
+    this->plan.assign(rows, std::vector<char> (columns, WALL));
+    this->reachable.assign(rows, std::vector<bool> (columns, false));
+}
 
 #ifndef GENERATE
 #define GENERATE
-void generate(int x, int y, Labyrinth_type &labyrinth) {
+void generate(int x, int y, Laby_t &labyrinth) {
     std::vector<int> randomDirections {UP, LEFT, DOWN, RIGHT};
     random_shuffle(randomDirections.begin(), randomDirections.end());
 
@@ -59,10 +63,7 @@ void generate(int x, int y, Labyrinth_type &labyrinth) {
 }
 #endif
 
-
-#ifndef PRINT_LABYRINTH
-#define PRINT_LABYRINTH
-void printLabyrinth(Labyrinth_type &labyrinth) {
+void printLabyrinth(Laby_t &labyrinth) {
     for (int i = 0; i < ROWS; i++) {
         for (int j = 0; j < COLUMNS; j++) {
             std::cout << labyrinth.plan[i][j];
@@ -70,8 +71,6 @@ void printLabyrinth(Labyrinth_type &labyrinth) {
         std::cout << std::endl;
     }
 }
-#endif
-
 
 bool checkForErrors() {
     if (ROWS < 3 || COLUMNS < 3 || ROWS % 2 == 0 || COLUMNS % 2 == 0) {
@@ -84,10 +83,7 @@ bool checkForErrors() {
     return false;
 }
 
-
-#ifndef INIT_LABYRINTH
-#define INIT_LABYRINTH
-void initLabyrinth(Labyrinth_type &labyrinth) {
+void initLabyrinth(Laby_t &labyrinth) {
     labyrinth.reachable[1][1] = true;
 
     for (int i = 1; i < ROWS; i += 2) {
@@ -96,4 +92,3 @@ void initLabyrinth(Labyrinth_type &labyrinth) {
         }
     }
 }
-#endif

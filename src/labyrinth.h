@@ -1,3 +1,5 @@
+#ifndef LABYRINTH_H
+#define LABYRINTH_H
 #include <algorithm>
 #include <iostream>
 #include <vector>
@@ -5,20 +7,15 @@
 
 #include "constants.h"
 
-#ifndef LABYRINTH_TYPE_DEFINED
-#define LABYRINTH_TYPE_DEFINED
-struct Labyrinth_type {
+struct Laby_t {
     std::vector<std::vector<char>> plan;
     std::vector<std::vector<bool>> reachable;
 
-    Labyrinth_type(int rows, int columns) {
-        plan.assign(rows, std::vector<char> (columns, WALL));
-        reachable.assign(rows, std::vector<bool> (columns, false));
-    }
+    Laby_t(int, int);
 };
-#endif
 
-void generate(int x, int y, Labyrinth_type &labyrinth);
-void printLabyrinth(Labyrinth_type &labyrinth);
-void initLabyrinth(Labyrinth_type &labyrinth);
+void generate(int x, int y, Laby_t &labyrinth);
+void printLabyrinth(Laby_t &labyrinth);
+void initLabyrinth(Laby_t &labyrinth);
 bool checkForErrors();
+#endif

@@ -19,7 +19,7 @@ int main() {
     
     std::srand(std::time(NULL));
 
-    Labyrinth_type labyrinth(ROWS, COLUMNS);
+    Laby_t labyrinth(ROWS, COLUMNS);
     initLabyrinth(labyrinth);
 
     generate(1, 1, labyrinth);
