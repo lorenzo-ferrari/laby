@@ -1,30 +1,35 @@
+#include <array>
 #include <algorithm>
+#include <fstream>
 #include <iostream>
 #include <vector>
-#include <ctime>
 
 #include "labyrinth.h"
-#include "constants.h"
 
-#define INPUT_FILE "input.txt"
-#define OUTPUT_FILE "output.txt"
 
-int main() {
-    // freopen(INPUT_FILE, "r", stdin);
-    // freopen(OUTPUT_FILE, "w", stdout);
-
-    if(checkForErrors()) {
-        return 0;
+int main(int argc, char** argv)
+{
+    int rows;
+    std::cout << "Enter number of rows: ";
+    std::cin >> rows;
+    if (std::cin.fail()) {
+        std::cout << "Input not valid" << std::endl;;
+        exit(EXIT_FAILURE);
     }
-    
-    std::srand(std::time(NULL));
 
-    Laby_t labyrinth(ROWS, COLUMNS);
-    initLabyrinth(labyrinth);
+    int columns;
+    std::cout << "Enter number of columns: ";
+    std::cin >> columns;
+    if (std::cin.fail()) {
+        std::cout << "Input not valid" << std::endl;
+        exit(EXIT_FAILURE);
+    }
 
-    generate(1, 1, labyrinth);
+    laby_t labyrinth(rows, columns);
+    labyrinth.print(std::cout);
 
-    printLabyrinth(labyrinth);
+    std::ofstream bmp("output.pbm");
+    labyrinth.print_bmp(bmp);
 
-    return 0;
+    bmp.close();
 }

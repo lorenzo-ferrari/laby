@@ -1,94 +1,59 @@
 #include <algorithm>
+#include <array>
+#include <fstream>
 #include <iostream>
 #include <vector>
-#include <ctime>
 
 #include "labyrinth.h"
-#include "constants.h"
-#include "aliases.h"
 
 
-#define UP 0
-#define LEFT 1
-#define DOWN 2
-#define RIGHT 3
+laby_t::laby_t (int _rows, int _cols) : rows(_rows), cols(_cols) {
+    this->map.assign(2 * rows + 1, std::vector<bool> (2 * cols + 1, laby::WALL));
+    this->vis.assign(2 * rows + 1, std::vector<bool> (2 * cols + 1, false));
 
-Laby_t::Laby_t (int rows, int columns) {
-    this->plan.assign(rows, std::vector<char> (columns, WALL));
-    this->reachable.assign(rows, std::vector<bool> (columns, false));
+    dfs(1, 1);
 }
 
-#ifndef GENERATE
-#define GENERATE
-void generate(int x, int y, Laby_t &labyrinth) {
-    std::vector<int> randomDirections {UP, LEFT, DOWN, RIGHT};
-    random_shuffle(randomDirections.begin(), randomDirections.end());
+bool laby_t::valid(int x, int y) {
+    if (x < 0 || x >= 2 * this->rows + 1) return false;
+    if (y < 0 || y >= 2 * this->cols + 1) return false;
+    return true;
+}
 
-    for (int direction: randomDirections) {
-        switch (direction) {
-            case UP:
-                if (x - 2 > 0 && !labyrinth.reachable[x - 2][y]) {
-                    labyrinth.plan[x - 1][y] = EMPTY;
-                    labyrinth.reachable[x - 2][y] = true;
-                    generate(x - 2, y, labyrinth);
-                }
-                break;
+void laby_t::dfs(int x, int y) {
+    this->vis[x][y] = true;
+    this->map[x][y] = laby::EMPTY;
 
-            case LEFT:
-                if (y - 2 > 0 && !labyrinth.reachable[x][y - 2]) {
-                    labyrinth.plan[x][y - 1] = EMPTY;
-                    labyrinth.reachable[x][y - 2] = true;
-                    generate(x, y - 2, labyrinth);
-                }
-                break;
-
-            case DOWN:
-                if (x + 2 < ROWS && !labyrinth.reachable[x + 2][y]) {
-                    labyrinth.plan[x + 1][y] = EMPTY;
-                    labyrinth.reachable[x + 2][y] = true;
-                    generate(x + 2, y, labyrinth);
-                }
-                break;
-            
-            case RIGHT:
-                if (y + 2 < COLUMNS && !labyrinth.reachable[x][y + 2]) {
-                    labyrinth.plan[x][y + 1] = EMPTY;
-                    labyrinth.reachable[x][y + 2] = true;
-                    generate(x, y + 2, labyrinth);
-                }
-                break;
-
+    auto local_dirs = laby::dirs;
+    random_shuffle(local_dirs.begin(), local_dirs.end());
+    for (auto [dx, dy] : local_dirs) {
+        int newx = x + dx;
+        int newy = y + dy;
+        if (valid(newx, newy) && !this->vis[newx][newy]) {
+            this->map[x + dx / 2][y + dy / 2] = laby::EMPTY;
+            dfs(newx, newy);
         }
     }
 }
-#endif
 
-void printLabyrinth(Laby_t &labyrinth) {
-    for (int i = 0; i < ROWS; i++) {
-        for (int j = 0; j < COLUMNS; j++) {
-            std::cout << labyrinth.plan[i][j];
+void laby_t::print(std::ostream& out) {
+    for (int i = 0; i < 2* this->rows + 1; ++i) {
+        for (int j = 0; j < 2 * this->cols + 1; ++j) {
+            if ((i & 1) == 0)
+                out << (j & 1 ? (this->map[i][j] ? "---" : "   ") : "+");
+            else
+                out << (j & 1 ? "   " : (this->map[i][j] ? "|" : " "));
         }
-        std::cout << std::endl;
+        out << "\n";
     }
 }
 
-bool checkForErrors() {
-    if (ROWS < 3 || COLUMNS < 3 || ROWS % 2 == 0 || COLUMNS % 2 == 0) {
-        std::cout << "ERROR: ";
-        std::cout << "'ROWS' and 'COLUMNS' must be odd numbers greater or equal 3" << std::endl;
-
-        return true;
-    }
-
-    return false;
-}
-
-void initLabyrinth(Laby_t &labyrinth) {
-    labyrinth.reachable[1][1] = true;
-
-    for (int i = 1; i < ROWS; i += 2) {
-        for (int j = 1; j < COLUMNS; j += 2) {
-            labyrinth.plan[i][j] = EMPTY;
-        }
+void laby_t::print_bmp(std::ostream& out) {
+    out << "P1" << "\n";
+    out << 2 * this->cols + 1 << " " << 2 * this->rows + 1 << "\n";
+    for (int i = 0; i < 2* this->rows + 1; ++i) {
+        for (int j = 0; j < 2 * this->cols + 1; ++j)
+            out << this->map[i][j];
+        out << "\n";
     }
 }
